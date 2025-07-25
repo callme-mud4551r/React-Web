@@ -1,24 +1,12 @@
 import React, { useState } from 'react';
-import { signup } from '../api/signup'; // ✅ Update this path if needed
+import { signup } from '../api/Signup'; // Match the correct casing
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
   const handleSignup = async () => {
-    if (!email || !password) {
-      setMessage('Please enter both email and password.');
-      return;
-    }
-
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setMessage('Invalid email format.');
-      return;
-    }
-
-    setLoading(true);
     try {
       await signup(email, password);
       setMessage('Signup success!');
@@ -26,40 +14,17 @@ function SignUp() {
       setPassword('');
     } catch (err) {
       console.error(err);
-      setMessage('Signup failed. Try again.');
+      setMessage('Signup failed.');
     }
-    setLoading(false);
   };
 
   return (
-    <div style={{ padding: '30px', maxWidth: '400px', margin: '0 auto' }}>
+    <div style={{ marginBottom: 30 }}>
       <h2>Sign Up</h2>
-
-      <input
-        placeholder="Email"
-        type="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        style={{ display: 'block', marginBottom: '10px', width: '100%' }}
-      />
-
-      <input
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        style={{ display: 'block', marginBottom: '10px', width: '100%' }}
-      />
-
-      <button onClick={handleSignup} disabled={loading} style={{ width: '100%', padding: '10px' }}>
-        {loading ? 'Signing Up...' : 'Sign Up'}
-      </button>
-
-      {message && (
-        <p style={{ marginTop: '10px', color: message.includes('success') ? 'green' : 'red' }}>
-          {message}
-        </p>
-      )}
+      <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+      <button onClick={handleSignup}>Sign Up</button>
+      {message && <p style={{ color: message.includes('success') ? 'green' : 'red' }}>{message}</p>}
     </div>
   );
 }

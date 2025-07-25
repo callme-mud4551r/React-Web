@@ -1,6 +1,5 @@
-// src/auth/SignIn.js
 import React, { useState } from 'react';
-import { signIn } from 'aws-amplify/auth'; // ✅ Correct import
+import { signIn } from 'aws-amplify/auth';
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -12,31 +11,20 @@ function SignIn() {
     try {
       const user = await signIn({ username: email, password });
       console.log('Sign-in success:', user);
-      alert('Sign-In Success');
+      alert('Signed In!');
     } catch (err) {
       console.error('Sign-In Error:', err);
-      alert(`Sign-In Failed: ${err.message}`);
+      alert('Sign-In Failed');
     }
     setLoading(false);
   };
 
   return (
-    <div>
+    <div style={{ marginBottom: 30 }}>
       <h2>Sign In</h2>
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-      />
-      <input
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-      />
-      <button onClick={handleSignIn} disabled={loading}>
-        {loading ? 'Signing In...' : 'Sign In'}
-      </button>
+      <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      <button onClick={handleSignIn} disabled={loading}>{loading ? 'Signing In...' : 'Sign In'}</button>
     </div>
   );
 }

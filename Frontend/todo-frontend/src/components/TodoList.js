@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { getTodos } from "../api";
-import TodoItem from "./TodoItem";
-import AddTodo from "./AddTodo";
+import React, { useEffect, useState } from 'react';
+import { fetchTodos } from '../api';
+import TodoItem from './TodoItem';
+import AddTodo from './AddTodo';
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchTodos();
+    loadTodos();
   }, []);
 
-  const fetchTodos = async () => {
-    const response = await getTodos();
-    setTodos(response.data);
+  const loadTodos = async () => {
+    try {
+      const response = await fetchTodos();
+      setTodos(response.data);
+    } catch (error) {
+      console.error("Fetching todos failed:", error);
+    }
+    setLoading(false);
   };
 
   const handleAdd = (newTodo) => setTodos([newTodo, ...todos]);
@@ -24,14 +30,22 @@ const TodoList = () => {
   return (
     <div>
       <AddTodo onAdd={handleAdd} />
-      {todos.map(todo => (
-        <TodoItem
-          key={todo._id}
-          todo={todo}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-        />
-      ))}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        todos.length ? (
+          todos.map(todo => (
+            <TodoItem
+              key={todo._id}
+              todo={todo}
+              onUpdate={handleUpdate}
+              onDelete={handleDelete}
+            />
+          ))
+        ) : (
+          <p>No todos yet.</p>
+        )
+      )}
     </div>
   );
 };

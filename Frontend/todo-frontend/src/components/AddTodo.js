@@ -1,15 +1,19 @@
-import React, { useState } from "react";
-import { addTodo } from "../api";
+import React, { useState } from 'react';
+import { createTodo } from '../api';
 
 const AddTodo = ({ onAdd }) => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (title.trim()) {
-      const response = await addTodo({ title });
-      onAdd(response.data);
-      setTitle("");
+      try {
+        const response = await createTodo({ title });
+        onAdd(response.data);
+        setTitle('');
+      } catch (error) {
+        console.error("AddTodo failed:", error);
+      }
     }
   };
 
@@ -17,7 +21,7 @@ const AddTodo = ({ onAdd }) => {
     <form onSubmit={handleSubmit} style={{ marginBottom: 16 }}>
       <input
         value={title}
-        onChange={e => setTitle(e.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a new todo"
       />
       <button type="submit">Add</button>

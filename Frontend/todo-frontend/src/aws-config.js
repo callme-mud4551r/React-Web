@@ -1,10 +1,8 @@
 import { Amplify } from 'aws-amplify';
-import { Auth } from 'aws-amplify/auth';
 
 Amplify.configure({
-  Auth: {
-    region: 'us-east-1',
-    userPoolId: 'us-east-1_G63w6nmme',
-    userPoolWebClientId: '2c45itfb8mia3onu4vvjlbgmh4',
-  }
+  // No Auth, no OAuth — purely a placeholder for future expansions
+  // You can add other modules here later (like API or Storage)
 });
+
+console.log("Amplify configured without Auth or OAuth");
